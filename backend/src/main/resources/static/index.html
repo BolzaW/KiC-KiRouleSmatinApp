@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Générateur PDF</title>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.5rem; }
+        input { width: 100%; padding: 0.5rem; }
+        button { padding: 0.5rem 1rem; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Générateur de Rapport</h1>
+    <div class="form-group">
+        <label for="sheetId">ID du Google Sheet</label>
+        <input type="text" id="sheetId" placeholder="ex: 1BxiMVs0XRA5nFMdMw...">
+    </div>
+    <button onclick="genererPDF()">Générer et Télécharger PDF</button>
+
+    <script>
+        async function genererPDF() {
+            const sheetId = document.getElementById('sheetId').value;
+            if(!sheetId) return alert("Veuillez entrer un ID");
+
+            const btn = document.querySelector('button');
+            btn.disabled = true;
+            btn.innerText = "Traitement en cours...";
+
+            try {
+                // Appel au backend (à implémenter en Java)
+                const response = await fetch(`/api/generate-pdf?sheetId=${sheetId}`, {
+                    method: 'POST'
+                });
+
+                if (!response.ok) throw new Error("Erreur lors de la génération");
+
+                // Récupération du fichier binaire (Blob)
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                
+                // Ouverture ou téléchargement
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "rapport.pdf";
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            } catch (e) {
+                alert("Erreur: " + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Générer et Télécharger PDF";
+            }
+        }
+    </script>
+</body>
+</html>
