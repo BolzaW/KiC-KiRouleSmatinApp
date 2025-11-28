@@ -1,4 +1,4 @@
-package com.monprojet.backend;
+package com.kicekiroule.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
