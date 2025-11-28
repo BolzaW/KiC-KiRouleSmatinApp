@@ -1,0 +1,18 @@
+{
+  "name": "Java Spring Boot Dev",
+  "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vmware.vscode-spring-boot",
+        "gabrielbb.vscode-lombok"
+      ]
+    }
+  },
+  "forwardPorts": [60000],
+  "postCreateCommand": "java -version"
+}
